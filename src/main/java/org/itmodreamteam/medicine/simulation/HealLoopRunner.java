@@ -1,39 +1,42 @@
 package org.itmodreamteam.medicine.simulation;
 
 import lombok.RequiredArgsConstructor;
+import org.itmodreamteam.medicine.simulation.step.*;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class HealLoopRunner {
 
-    private final MeasurementStage measurementStage;
-    private final DiagnoseStage diagnoseStage;
-    private final TreatmentStage treatmentStage;
+    private final AdmissionStepRunner admissionStepRunner;
+    private final MeasurementStepRunner measurementStepRunner;
+    private final DiagnoseStepRunner diagnoseStepRunner;
+    private final TreatmentStepRunner treatmentStepRunner;
+    private final DischargeStepRunner dischargeStepRunner;
 
     public void heal(PatientCaseHistory history) {
-        Stage stage = Stage.ADMISSION;
-        while (stage != Stage.DISCHARGE) {
-            switch (stage) {
+        do {
+            switch (history.getStep()) {
                 case ADMISSION:
-                    stage = Stage.MEASUREMENT;
+                    admissionStepRunner.run(history);
                     break;
 
                 case MEASUREMENT:
-                    measurementStage.takeMeasurements(history);
-                    stage = Stage.DIAGNOSE;
+                    measurementStepRunner.run(history);
                     break;
 
                 case DIAGNOSE:
-                    diagnoseStage.diagnose(history);
-                    stage = history.isDiagnosisMade() ? Stage.TREATMENT : Stage.MEASUREMENT;
+                    diagnoseStepRunner.run(history);
                     break;
 
                 case TREATMENT:
-                    treatmentStage.treat(history);
-                    stage = Stage.DISCHARGE;
+                    treatmentStepRunner.run(history);
+                    break;
+
+                case DISCHARGE:
+                    diagnoseStepRunner.run(history);
                     break;
             }
-        }
+        } while (!history.isDischarged());
     }
 }

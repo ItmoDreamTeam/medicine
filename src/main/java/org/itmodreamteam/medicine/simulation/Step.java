@@ -1,6 +1,6 @@
 package org.itmodreamteam.medicine.simulation;
 
-public enum Stage {
+public enum Step {
     ADMISSION,
     MEASUREMENT,
     DIAGNOSE,
