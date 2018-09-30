@@ -33,6 +33,7 @@ public class MeasurementStepRunner implements StepRunner {
             history.setStep(Step.DISCHARGE);
         } else {
             takeMeasurements(history);
+            history.setStep(Step.DIAGNOSE);
         }
     }
 
