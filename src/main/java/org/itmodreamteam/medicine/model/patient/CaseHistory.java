@@ -1,6 +1,7 @@
 package org.itmodreamteam.medicine.model.patient;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.itmodreamteam.medicine.model.BaseEntity;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @ToString(callSuper = true)
 public class CaseHistory extends BaseEntity {
 
@@ -20,4 +22,9 @@ public class CaseHistory extends BaseEntity {
 
     private LocalDateTime admissionDateTime;
     private LocalDateTime dischargeDateTime;
+
+    public CaseHistory(Patient patient, LocalDateTime admissionDateTime) {
+        this.patient = patient;
+        this.admissionDateTime = admissionDateTime;
+    }
 }
