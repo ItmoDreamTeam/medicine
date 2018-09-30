@@ -22,15 +22,30 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MeasurementStepRunner implements StepRunner {
 
+    private static final int REQUIRED_HEALTHY_MEASUREMENTS_PERCENTAGE = 20;
+
     private final MeasurementRepository measurementRepository;
     private final PatientMeasurementRepository patientMeasurementRepository;
 
     @Override
     public void run(PatientCaseHistory history) {
+        if (isHealthy(history)) {
+            history.setStep(Step.DISCHARGE);
+        } else {
+            takeMeasurements(history);
+        }
+    }
+
+    private boolean isHealthy(PatientCaseHistory history) {
+        double takenMeasurementsPercentage = 100.0 * history.getMeasurements().size() / measurementRepository.count();
+        return takenMeasurementsPercentage >= REQUIRED_HEALTHY_MEASUREMENTS_PERCENTAGE &&
+                history.getMeasurements().parallelStream().allMatch(measurement -> measurement.getValue() < 0.1);
+    }
+
+    private void takeMeasurements(PatientCaseHistory history) {
         Random random = ThreadLocalRandom.current();
         List<Measurement> measurements = getNotTakenMeasurements(history, random.nextInt(10) + 1);
         measurements.forEach(measurement -> takeMeasurement(history, measurement));
-        history.setStep(Step.DIAGNOSE);
         log.info("{} -> {} measurements taken", history.getPatient().getName(), measurements.size());
     }
 
