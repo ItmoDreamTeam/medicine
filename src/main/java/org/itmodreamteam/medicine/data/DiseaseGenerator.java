@@ -16,9 +16,9 @@ import static org.itmodreamteam.medicine.util.ReadableStringGenerator.generateNa
 @RequiredArgsConstructor
 public class DiseaseGenerator {
 
-    private static final int DISEASES_QUANTITY = 10;
+    private static final int DISEASES_QUANTITY = 300;
     private static final int MEASUREMENTS_QUANTITY = 100;
-    private static final int TREATMENTS_QUANTITY = 1000;
+    private static final int TREATMENTS_QUANTITY = 100;
 
     private final DiseaseRepository diseaseRepository;
     private final MeasurementRepository measurementRepository;

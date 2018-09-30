@@ -38,7 +38,7 @@ public class MeasurementStepRunner implements StepRunner {
     }
 
     private boolean isHealthy(PatientCaseHistory history) {
-        return history.getMeasurements().size() >= 5 &&
+        return history.getMeasurements().size() >= 1 &&
                 history.getMeasurements().parallelStream().allMatch(measurement -> measurement.getValue() < 0.1);
     }
 
