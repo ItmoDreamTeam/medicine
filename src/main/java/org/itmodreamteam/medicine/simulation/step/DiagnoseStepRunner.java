@@ -46,7 +46,7 @@ public class DiagnoseStepRunner implements StepRunner {
             }
         }
         log.info("min distance = {}", minDistance);
-        return minDistance < 7 ? Optional.of(probableDisease) : Optional.empty();
+        return minDistance < 4 ? Optional.of(probableDisease) : Optional.empty();
     }
 
     private double distance(List<DiseaseMeasurement> diseaseMeasurements, List<PatientMeasurement> patientMeasurements) {
