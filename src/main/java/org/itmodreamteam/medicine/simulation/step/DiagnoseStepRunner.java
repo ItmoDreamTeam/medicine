@@ -2,6 +2,7 @@ package org.itmodreamteam.medicine.simulation.step;
 
 import lombok.RequiredArgsConstructor;
 import org.itmodreamteam.medicine.simulation.PatientCaseHistory;
+import org.itmodreamteam.medicine.simulation.Step;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,6 +11,6 @@ public class DiagnoseStepRunner implements StepRunner {
 
     @Override
     public void run(PatientCaseHistory history) {
-
+        history.setStep(Step.TREATMENT);
     }
 }

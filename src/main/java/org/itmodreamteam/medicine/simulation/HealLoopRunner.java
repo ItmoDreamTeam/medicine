@@ -34,7 +34,7 @@ public class HealLoopRunner {
                     break;
 
                 case DISCHARGE:
-                    diagnoseStepRunner.run(history);
+                    dischargeStepRunner.run(history);
                     break;
             }
         } while (!history.isDischarged());
