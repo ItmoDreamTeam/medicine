@@ -1,6 +1,7 @@
 package org.itmodreamteam.medicine.simulation.step;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.itmodreamteam.medicine.model.disease.Measurement;
 import org.itmodreamteam.medicine.model.patient.PatientMeasurement;
 import org.itmodreamteam.medicine.repository.MeasurementRepository;
@@ -16,6 +17,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MeasurementStepRunner implements StepRunner {
@@ -26,9 +28,10 @@ public class MeasurementStepRunner implements StepRunner {
     @Override
     public void run(PatientCaseHistory history) {
         Random random = ThreadLocalRandom.current();
-        getNotTakenMeasurements(history, random.nextInt(10) + 1).parallelStream()
-                .forEach(measurement -> takeMeasurement(history, measurement));
+        List<Measurement> measurements = getNotTakenMeasurements(history, random.nextInt(10) + 1);
+        measurements.forEach(measurement -> takeMeasurement(history, measurement));
         history.setStep(Step.DIAGNOSE);
+        log.info("{} -> {} measurements taken", history.getPatient().getName(), measurements.size());
     }
 
     private List<Measurement> getNotTakenMeasurements(PatientCaseHistory history, int limit) {

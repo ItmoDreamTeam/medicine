@@ -18,7 +18,7 @@ import static org.itmodreamteam.medicine.util.ReadableStringGenerator.generateNa
 @RequiredArgsConstructor
 public class PatientGenerator {
 
-    private static final int PATIENTS_QUANTITY = 100;
+    private static final int PATIENTS_QUANTITY = 3;
 
     private final CaseHistoryRepository caseHistoryRepository;
     private final PatientRepository patientRepository;
