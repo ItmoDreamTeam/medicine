@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MeasurementStepRunner implements StepRunner {
 
-    private static final int REQUIRED_HEALTHY_MEASUREMENTS_PERCENTAGE = 20;
-
     private final MeasurementRepository measurementRepository;
     private final PatientMeasurementRepository patientMeasurementRepository;
 
@@ -31,6 +29,8 @@ public class MeasurementStepRunner implements StepRunner {
     public void run(PatientCaseHistory history) {
         if (isHealthy(history)) {
             history.setStep(Step.DISCHARGE);
+        } else if (history.isDiagnosisMade()) {
+            history.setStep(Step.TREATMENT);
         } else {
             takeMeasurements(history);
             history.setStep(Step.DIAGNOSE);
@@ -38,8 +38,7 @@ public class MeasurementStepRunner implements StepRunner {
     }
 
     private boolean isHealthy(PatientCaseHistory history) {
-        double takenMeasurementsPercentage = 100.0 * history.getMeasurements().size() / measurementRepository.count();
-        return takenMeasurementsPercentage >= REQUIRED_HEALTHY_MEASUREMENTS_PERCENTAGE &&
+        return history.getMeasurements().size() >= 5 &&
                 history.getMeasurements().parallelStream().allMatch(measurement -> measurement.getValue() < 0.1);
     }
 

@@ -8,6 +8,7 @@ import org.itmodreamteam.medicine.model.patient.PatientTreatment;
 import org.itmodreamteam.medicine.repository.DiseaseTreatmentRepository;
 import org.itmodreamteam.medicine.repository.PatientTreatmentRepository;
 import org.itmodreamteam.medicine.simulation.PatientCaseHistory;
+import org.itmodreamteam.medicine.simulation.Step;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,8 @@ public class TreatmentStepRunner implements StepRunner {
     @Override
     public void run(PatientCaseHistory history) {
         assignTreatments(history);
+        calculateMeasurementsImprovement(history);
+        history.setStep(Step.MEASUREMENT);
     }
 
     private void assignTreatments(PatientCaseHistory history) {
@@ -52,5 +55,9 @@ public class TreatmentStepRunner implements StepRunner {
         PatientTreatment patientTreatment = new PatientTreatment(history.getCaseHistory(), treatment, LocalDateTime.now(), LocalDateTime.now().plusDays(3));
         patientTreatment = patientTreatmentRepository.save(patientTreatment);
         history.addPatientTreatment(patientTreatment);
+    }
+
+    private void calculateMeasurementsImprovement(PatientCaseHistory history) {
+        history.getMeasurements().parallelStream().forEach(measurement -> measurement.setValue(measurement.getValue() * 0.5));
     }
 }
