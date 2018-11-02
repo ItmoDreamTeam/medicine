@@ -7,6 +7,10 @@ import org.itmodreamteam.medicine.model.Treatment;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * The more measurements we have taken (the more factors we have considered),
+ * the better treatment we will choose to cure the patient
+ */
 public class TreatmentFactory {
 
     public static Treatment getTreatment(State state, Measurement measurement) {
