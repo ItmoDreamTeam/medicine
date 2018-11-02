@@ -4,11 +4,14 @@ import lombok.SneakyThrows;
 import org.itmodreamteam.medicine.model.Measurement;
 import org.itmodreamteam.medicine.model.MedicalProcess;
 import org.itmodreamteam.medicine.model.State;
+import org.itmodreamteam.medicine.model.Treatment;
 import org.itmodreamteam.medicine.service.Measurer;
 import org.itmodreamteam.medicine.service.MedicalProcessDeterminant;
 import org.itmodreamteam.medicine.service.StateDeterminant;
+import org.itmodreamteam.medicine.service.TreatmentFactory;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class MedicineApp {
 
@@ -33,6 +36,10 @@ public class MedicineApp {
     }
 
     private static void treat(State state) {
+        Measurement measurement = Measurer.measure();
+        Treatment treatment = TreatmentFactory.getTreatment(state, measurement);
+        Consumer<Treatment> treatmentConsumer = t -> System.out.println("Treat...");
+        treatmentConsumer.accept(treatment);
     }
 
     @SneakyThrows
