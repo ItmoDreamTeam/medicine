@@ -16,7 +16,7 @@ public class Measurer {
         int todayMinutes = now.getHour() * 60 + now.getMinute();
         byte[] measurements = new byte[todayMinutes];
         ThreadLocalRandom.current().nextBytes(measurements);
-        System.out.format("%d measurements for now: %s", todayMinutes, Arrays.toString(measurements));
+        System.out.format("%d measurements for now: %s\n", todayMinutes, Arrays.toString(measurements));
         return new Measurement();
     }
 }
