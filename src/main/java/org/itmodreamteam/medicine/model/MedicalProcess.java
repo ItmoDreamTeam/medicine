@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 public class MedicalProcess {
 
-    private String name = "abc";
-    private State initialState = new State();
-    private State finalState = new State();
+    private long id;
+    private State initialState;
+    private State finalState;
 }

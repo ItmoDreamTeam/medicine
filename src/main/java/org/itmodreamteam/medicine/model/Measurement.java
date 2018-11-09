@@ -2,8 +2,7 @@ package org.itmodreamteam.medicine.model;
 
 import lombok.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,5 +11,9 @@ import java.util.Map;
 @ToString
 public class Measurement {
 
-    private Map<String, Object> items = new HashMap<>();
+    private MeasurementDefinition definition;
+    private LocalDateTime dateTime;
+    private boolean booleanValue;
+    private int intValue;
+    private double doubleValue;
 }

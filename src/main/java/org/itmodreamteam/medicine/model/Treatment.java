@@ -2,8 +2,7 @@ package org.itmodreamteam.medicine.model;
 
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,5 +11,7 @@ import java.util.List;
 @ToString
 public class Treatment {
 
-    private List<String> items = new ArrayList<>();
+    private TreatmentDefinition definition;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }

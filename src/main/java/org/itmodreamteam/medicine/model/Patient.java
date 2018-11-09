@@ -9,8 +9,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class State {
+public class Patient {
 
-    private long id;
-    private List<TreatmentDefinition> treatments;
+    private List<Treatment> treatments;
+    private List<Measurement> measurements;
 }
