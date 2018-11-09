@@ -4,7 +4,7 @@ import org.itmodreamteam.medicine.model.Measurement;
 import org.itmodreamteam.medicine.model.Patient;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 
 @Repository
@@ -17,6 +17,6 @@ public class MeasurementRepository {
     }
 
     public Set<Measurement> getSignificantMeasurements(Patient patient) {
-        return new HashSet<>();
+        return Collections.singleton(new Measurement());
     }
 }

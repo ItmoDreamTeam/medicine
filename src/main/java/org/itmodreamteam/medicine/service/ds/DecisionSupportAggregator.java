@@ -15,11 +15,11 @@ public class DecisionSupportAggregator implements DecisionSupport {
 
     @Override
     public boolean isCompatible(TreatmentDefinition treatment1, TreatmentDefinition treatment2) {
-        return false;
+        return decisionSupports.parallelStream().allMatch(decisionSupport -> decisionSupport.isCompatible(treatment1, treatment2));
     }
 
     @Override
     public boolean isCompatible(TreatmentDefinition treatment1, TreatmentDefinition treatment2, Measurement measurement) {
-        return false;
+        return decisionSupports.parallelStream().allMatch(decisionSupport -> decisionSupport.isCompatible(treatment1, treatment2, measurement));
     }
 }
