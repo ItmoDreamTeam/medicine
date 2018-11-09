@@ -9,8 +9,8 @@ import org.itmodreamteam.medicine.repository.TreatmentDefinitionRepository;
 import org.itmodreamteam.medicine.service.ds.DecisionSupportAggregator;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -22,19 +22,22 @@ public class BronchialAsthmaState1TreatmentDeterminant implements TreatmentDeter
 
     @Override
     public List<TreatmentDefinition> determineTreatments(CaseHistory caseHistory) {
-        List<TreatmentDefinition> result = new ArrayList<>();
-        for (TreatmentDefinition potentialTreatment : caseHistory.getCurrentState().getTreatments()) {
-            for (TreatmentDefinition currentTreatment : treatmentDefinitionRepository.getCurrentTreatments(caseHistory.getPatient())) {
-                if (!decisionSupportAggregator.isCompatible(potentialTreatment, currentTreatment)) {
-                    continue;
-                }
-                for (Measurement significantMeasurement : measurementRepository.getSignificantMeasurements(caseHistory.getPatient())) {
-                    if (decisionSupportAggregator.isCompatible(potentialTreatment, currentTreatment, significantMeasurement)) {
-                        result.add(potentialTreatment);
-                    }
+        return caseHistory.getCurrentState().getTreatments().stream()
+                .filter(potentialTreatment -> isCompatible(caseHistory, potentialTreatment))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isCompatible(CaseHistory caseHistory, TreatmentDefinition potentialTreatment) {
+        for (TreatmentDefinition currentTreatment : treatmentDefinitionRepository.getCurrentTreatments(caseHistory.getPatient())) {
+            if (!decisionSupportAggregator.isCompatible(potentialTreatment, currentTreatment)) {
+                return false;
+            }
+            for (Measurement significantMeasurement : measurementRepository.getSignificantMeasurements(caseHistory.getPatient())) {
+                if (!decisionSupportAggregator.isCompatible(potentialTreatment, currentTreatment, significantMeasurement)) {
+                    return false;
                 }
             }
         }
-        return result;
+        return true;
     }
 }
